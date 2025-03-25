@@ -1,0 +1,14 @@
+// Created by Tree IT
+newmtl coconut_palm1
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+map_Kd coconut_palm1.png
+
+newmtl coconut_palm2
+Ka 1 1 1
+Kd 1 1 1
+Ks 0 0 0
+Tr 0.001
+map_Kd coconut_palm2.png
+

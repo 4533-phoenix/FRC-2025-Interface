@@ -1,0 +1,593 @@
+[gd_scene load_steps=42 format=3 uid="uid://bdjmft2xspugl"]
+
+[ext_resource type="Script" uid="uid://bqyur8g2g8gvs" path="res://addons/sky_3d/src/Sky3D.gd" id="1_tbgi4"]
+[ext_resource type="Script" uid="uid://cogxb51qx4grw" path="res://addons/sky_3d/src/Skydome.gd" id="2_tefeu"]
+[ext_resource type="Script" uid="uid://dk1ftnpeym2nm" path="res://addons/sky_3d/src/TimeOfDay.gd" id="3_o6xl0"]
+[ext_resource type="Terrain3DMaterial" uid="uid://diwmmvl6requ5" path="res://data/material.tres" id="4_tipki"]
+[ext_resource type="Terrain3DAssets" uid="uid://bh40xeyvx1w4" path="res://data/assets.tres" id="5_85g3d"]
+[ext_resource type="Script" uid="uid://ceodq8tn67isi" path="res://addons/terrain_3d/utils/terrain_3d_objects.gd" id="6_eb6dy"]
+[ext_resource type="Shader" uid="uid://c5fs2iwwej8xe" path="res://assets/water/water.gdshader" id="6_tefeu"]
+[ext_resource type="Texture2D" uid="uid://dyykjos38bcy6" path="res://assets/water/textures/foam_albedo.png" id="7_85g3d"]
+[ext_resource type="PackedScene" uid="uid://blg87m15ymxr8" path="res://assets/foliage/palm 1/palm 1.tscn" id="7_trceg"]
+[ext_resource type="Texture2D" uid="uid://cwxc7l3cc8y46" path="res://assets/drawings/schematic.png" id="8_a8y0u"]
+[ext_resource type="Texture2D" uid="uid://dyoqp3bktemep" path="res://assets/water/textures/normal_A.png" id="8_choun"]
+[ext_resource type="Texture2D" uid="uid://dbq52modg3flk" path="res://assets/water/textures/normal_B.png" id="9_ya4ey"]
+[ext_resource type="PackedScene" uid="uid://bhuxk7utw1vjq" path="res://assets/robot/robot.glb" id="13_trceg"]
+[ext_resource type="Texture2D" uid="uid://bxcmii4v0i67u" path="res://assets/drawings/armview.png" id="16_jbj1t"]
+[ext_resource type="PackedScene" uid="uid://dh41a2v3gn7ek" path="res://assets/field/field.glb" id="19_0ld40"]
+
+[sub_resource type="GDScript" id="GDScript_jkv2x"]
+resource_name = "IDK"
+script/source = "extends FRCInterfaceBase
+
+func _process(_delta):
+	if Input.is_action_just_pressed(\"Force\"):
+		toggle_force_connected()
+"
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_choun"]
+use_debanding = false
+
+[sub_resource type="Sky" id="Sky_ya4ey"]
+sky_material = SubResource("PhysicalSkyMaterial_choun")
+
+[sub_resource type="Environment" id="Environment_eb6dy"]
+background_mode = 2
+sky = SubResource("Sky_ya4ey")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 2
+tonemap_mode = 3
+tonemap_white = 6.0
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_trceg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jkv2x"]
+albedo_texture = ExtResource("8_a8y0u")
+
+[sub_resource type="QuadMesh" id="QuadMesh_jbj1t"]
+material = SubResource("StandardMaterial3D_jkv2x")
+size = Vector2(0.5, 0.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_muem4"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_eb6dy"]
+noise_type = 3
+domain_warp_enabled = true
+domain_warp_fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_trceg"]
+seamless = true
+seamless_blend_skirt = 0.6
+noise = SubResource("FastNoiseLite_eb6dy")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o6xl0"]
+render_priority = 0
+shader = ExtResource("6_tefeu")
+shader_parameter/wave_1 = Vector4(0.3, 4, 0.2, 0.6)
+shader_parameter/wave_2 = Vector4(-0.26, -0.19, 0.01, 0.47)
+shader_parameter/wave_3 = Vector4(-7.67, 5.63, 0.1, 0.38)
+shader_parameter/wave_4 = Vector4(-0.42, -1.63, 0.1, 0.28)
+shader_parameter/wave_5 = Vector4(1.66, 0.07, 0.15, 1.81)
+shader_parameter/wave_6 = Vector4(1.2, 1.14, 0.01, 0.33)
+shader_parameter/wave_7 = Vector4(-1.6, 7.3, 0.11, 0.73)
+shader_parameter/wave_8 = Vector4(-0.42, -1.63, 0.15, 1.52)
+shader_parameter/time_factor = 2.5
+shader_parameter/noise_zoom = 2.0
+shader_parameter/noise_amp = 1.0
+shader_parameter/base_water_color = Color(0.352941, 0.623529, 0.996078, 1)
+shader_parameter/fresnel_water_color = Color(0.95158, 0.95158, 0.95158, 1)
+shader_parameter/deep_water_color = Color(0.178608, 0.410126, 0.999998, 1)
+shader_parameter/shallow_water_color = Color(0.513726, 0.603922, 1, 1)
+shader_parameter/beers_law = 0.5
+shader_parameter/depth_offset = -1.2
+shader_parameter/near = 7.0
+shader_parameter/far = 10000.0
+shader_parameter/edge_texture_scale = 3.5
+shader_parameter/edge_texture_offset = 1.0
+shader_parameter/edge_texture_speed = 0.1
+shader_parameter/edge_foam_intensity = 2.0
+shader_parameter/edge_fade_start = -3.0
+shader_parameter/edge_fade_end = 6.6
+shader_parameter/edge_foam_texture = ExtResource("7_85g3d")
+shader_parameter/peak_height_threshold = 1.0
+shader_parameter/peak_color = Vector3(1, 1, 1)
+shader_parameter/peak_intensity = 1.0
+shader_parameter/foam_texture = ExtResource("7_85g3d")
+shader_parameter/foam_intensity = 1.0
+shader_parameter/foam_scale = 1.0
+shader_parameter/metallic = 0.6
+shader_parameter/roughness = 0.045
+shader_parameter/uv_scale_text_a = 0.1
+shader_parameter/uv_speed_text_a = Vector2(0.42, 0.3)
+shader_parameter/uv_scale_text_b = 0.6
+shader_parameter/uv_speed_text_b = Vector2(0.15, 0.1)
+shader_parameter/normal_strength = 1.0
+shader_parameter/uv_sampler_scale = 0.3
+shader_parameter/blend_factor = 0.28
+shader_parameter/normalmap_a = ExtResource("8_choun")
+shader_parameter/normalmap_b = ExtResource("9_ya4ey")
+shader_parameter/uv_sampler = SubResource("NoiseTexture2D_trceg")
+
+[sub_resource type="QuadMesh" id="QuadMesh_tipki"]
+material = SubResource("ShaderMaterial_o6xl0")
+size = Vector2(1024, 1024)
+subdivide_width = 100
+subdivide_depth = 500
+
+[sub_resource type="Curve3D" id="Curve3D_trceg"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15.164, 10, 57.22),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0ld40"]
+animation = &"connected"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_muem4"]
+animation = &"wait"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dp3eg"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gqmmt"]
+xfade_time = 0.5
+advance_mode = 2
+advance_expression = "connected"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yc10j"]
+advance_mode = 2
+advance_expression = "!connected"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0ld40"]
+states/connected/node = SubResource("AnimationNodeAnimation_0ld40")
+states/connected/position = Vector2(513, 100)
+states/wait/node = SubResource("AnimationNodeAnimation_muem4")
+states/wait/position = Vector2(316, 100)
+transitions = ["Start", "wait", SubResource("AnimationNodeStateMachineTransition_dp3eg"), "wait", "connected", SubResource("AnimationNodeStateMachineTransition_gqmmt"), "connected", "wait", SubResource("AnimationNodeStateMachineTransition_yc10j")]
+
+[sub_resource type="Animation" id="Animation_jscy8"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 31.0057, 15.0425, 23.3102)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:fov")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [75.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.75, 0.75)]
+}
+
+[sub_resource type="Animation" id="Animation_muem4"]
+resource_name = "connected"
+length = 10.0
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 31.0202, 15.0354, 23.326, 1, 1, 31.0202, 15.0354, 30.9818, 5, 1, 31, 15.035, 90, 5.76667, 1, 31, 15.035, 90, 7, 1, 31, 7.721, 90)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0.0596857, -0.127025, 0.00765766, 0.990073, 1.03333, 1, 0, 0, 0, 1, 4, 1, 0, 0, 0, 1, 5, 1, -0.608761, 0, 0, 0.793353, 7, 1, -0.5, 0, 0, 0.866)
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D:fov")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.03333, 1.26667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [75.0, 90.0, 75.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 5.96667, 7.03333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1e-05, 1e-05), Vector2(0.65, 0.65)]
+}
+
+[sub_resource type="Animation" id="Animation_yc10j"]
+resource_name = "wait"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 31.0202, 15.0354, 23.326, 1, 1, 31.1, 15.1, 23.326, 2, 1, 31.2, 15.05, 23.326, 3, 1, 31.0202, 15.0354, 23.326)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0.0596857, -0.127025, 0.00765766, 0.990073, 1, 1, 0.0713626, -0.127106, 0.00615847, 0.989299, 3, 1, 0.0596857, -0.127025, 0.00765766, 0.990073)
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pm3ni"]
+_data = {
+&"RESET": SubResource("Animation_jscy8"),
+&"connected": SubResource("Animation_muem4"),
+&"wait": SubResource("Animation_yc10j")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jkv2x"]
+bg_color = Color(0.704277, 0.593541, 0, 0.784314)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jbj1t"]
+bg_color = Color(0, 0.717647, 0.388235, 0.784314)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_muem4"]
+bg_color = Color(1, 0.345098, 0.27451, 0.784314)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Main" type="FRCInterfaceBase" node_paths=PackedStringArray("climb_button", "zero_button", "intake_button", "mid_button", "low_button", "coral_button", "intake_alga_button", "drop_alga_button")]
+climb_button = NodePath("Control/ClimbButton")
+zero_button = NodePath("Control/ZeroButton")
+intake_button = NodePath("Control/IntakeButton")
+mid_button = NodePath("Control/MidButton")
+low_button = NodePath("Control/LowButton")
+coral_button = NodePath("Control/CoralButton")
+intake_alga_button = NodePath("Control/IntakeAlgaButton")
+drop_alga_button = NodePath("Control/DropAlgaButton")
+ping_port = 5810
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.96045e-08, -1.19209e-07, 2.22158e-13)
+script = SubResource("GDScript_jkv2x")
+
+[node name="Sky3D" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_eb6dy")
+camera_attributes = SubResource("CameraAttributesPractical_trceg")
+script = ExtResource("1_tbgi4")
+enable_editor_time = false
+enable_game_time = false
+current_time = 12.0
+metadata/_custom_type_script = "uid://bqyur8g2g8gvs"
+
+[node name="SunLight" type="DirectionalLight3D" parent="Sky3D"]
+transform = Transform3D(0, -0.999334, -0.0365005, 0.630711, -0.0283251, 0.775501, -0.776018, -0.0230213, 0.63029, -0.0365004, 0.775501, 0.63029)
+shadow_enabled = true
+
+[node name="MoonLight" type="DirectionalLight3D" parent="Sky3D"]
+transform = Transform3D(0, -0.881305, 0.472549, -0.257426, 0.456623, 0.851603, -0.966298, -0.121646, -0.22687, 0.472549, 0.851603, -0.22687)
+light_color = Color(0.572549, 0.776471, 0.956863, 1)
+light_energy = 0.0
+shadow_enabled = true
+
+[node name="Skydome" type="Node" parent="Sky3D"]
+script = ExtResource("2_tefeu")
+sky_visible = true
+dome_radius = 10.0
+tonemap_level = 0.0
+exposure = 1.3
+ground_color = Color(0.3, 0.3, 0.3, 1)
+sky_layers = 4
+sky_render_priority = -128
+horizon_level = 0.0
+sun_altitude = -39.1495
+sun_azimuth = -183.314
+sun_disk_color = Color(0.996094, 0.541334, 0.140076, 1)
+sun_disk_intensity = 2.0
+sun_disk_size = 0.015
+sun_light_path = NodePath("../SunLight")
+sun_light_color = Color(1, 1, 1, 1)
+sun_horizon_light_color = Color(0.98, 0.523, 0.294, 1)
+sun_light_energy = 1.0
+moon_altitude = -136.152
+moon_azimuth = -346.24
+moon_color = Color(1, 1, 1, 1)
+moon_size = 0.07
+enable_set_moon_texture = false
+moon_resolution = 2
+moon_light_path = NodePath("../MoonLight")
+moon_light_color = Color(0.572549, 0.776471, 0.956863, 1)
+moon_light_energy = 0.3
+deep_space_euler = Vector3(1.29154, 3.14159, 1.34794)
+background_color = Color(0.709804, 0.709804, 0.709804, 0.854902)
+set_background_texture = false
+stars_field_color = Color(1, 1, 1, 1)
+set_stars_field_texture = false
+stars_scintillation = 0.75
+stars_scintillation_speed = 0.01
+atm_quality = 1
+atm_wavelenghts = Vector3(680, 550, 440)
+atm_darkness = 0.5
+atm_sun_intensity = 18.0
+atm_day_tint = Color(0.807843, 0.909804, 1, 1)
+atm_horizon_light_tint = Color(0.980392, 0.635294, 0.462745, 1)
+atm_enable_moon_scatter_mode = false
+atm_night_tint = Color(0.168627, 0.2, 0.25098, 1)
+atm_level_params = Vector3(1, 0, 0)
+atm_thickness = 0.7
+atm_mie = 0.07
+atm_turbidity = 0.001
+atm_sun_mie_tint = Color(1, 1, 1, 1)
+atm_sun_mie_intensity = 1.0
+atm_sun_mie_anisotropy = 0.8
+atm_moon_mie_tint = Color(0.137255, 0.184314, 0.292196, 1)
+atm_moon_mie_intensity = 0.7
+atm_moon_mie_anisotropy = 0.8
+fog_visible = true
+fog_atm_level_params_offset = Vector3(0, 0, -1)
+fog_density = 0.00015
+fog_rayleigh_depth = 0.116
+fog_mie_depth = 0.0001
+fog_falloff = 3.0
+fog_start = 0.0
+fog_end = 1000.0
+fog_layers = 524288
+fog_render_priority = 123
+clouds_thickness = 1.7
+clouds_coverage = 0.5
+clouds_absorption = 2.0
+clouds_sky_tint_fade = 0.5
+clouds_intensity = 10.0
+clouds_size = 2.0
+clouds_uv = Vector2(0.16, 0.11)
+clouds_direction = Vector2(0.25, 0.25)
+clouds_speed = 0.07
+set_clouds_texture = false
+clouds_cumulus_visible = true
+clouds_cumulus_day_color = Color(0.823529, 0.87451, 1, 1)
+clouds_cumulus_horizon_light_color = Color(0.98, 0.43, 0.15, 1)
+clouds_cumulus_night_color = Color(0.090196, 0.094118, 0.129412, 1)
+clouds_cumulus_thickness = 0.0243
+clouds_cumulus_coverage = 0.55
+clouds_cumulus_absorption = 2.0
+clouds_cumulus_noise_freq = 2.7
+clouds_cumulus_intensity = 1.0
+clouds_cumulus_mie_intensity = 1.0
+clouds_cumulus_mie_anisotropy = 0.206
+clouds_cumulus_size = 0.5
+clouds_cumulus_direction = Vector3(0.25, 0.1, 0.25)
+clouds_cumulus_speed = 0.05
+set_clouds_cumulus_texture = false
+environment = SubResource("Environment_eb6dy")
+
+[node name="TimeOfDay" type="Node" parent="Sky3D"]
+script = ExtResource("3_o6xl0")
+update_in_game = false
+update_in_editor = false
+dome_path = NodePath("../Skydome")
+system_sync = false
+total_cycle_in_minutes = 15.0
+total_hours = 12.0
+day = 1
+month = 1
+year = 2025
+celestials_calculations = 1
+compute_moon_coords = true
+compute_deep_space_coords = true
+latitude = 16.0
+longitude = 108.0
+utc = 7.0
+
+[node name="Terrain3D" type="Terrain3D" parent="."]
+data_directory = "res://data"
+material = ExtResource("4_tipki")
+assets = ExtResource("5_85g3d")
+collision_enabled = false
+cast_shadows = 0
+gi_mode = 0
+top_level = true
+metadata/_edit_lock_ = true
+
+[node name="Terrain3DObjects" type="Node3D" parent="Terrain3D"]
+script = ExtResource("6_eb6dy")
+metadata/_custom_type_script = "uid://ceodq8tn67isi"
+
+[node name="Palm1" parent="Terrain3D/Terrain3DObjects" instance=ExtResource("7_trceg")]
+transform = Transform3D(0.973857, -0.227161, 0, 0.227161, 0.973857, 0, 0, 0, 1, 31.4355, 12.8794, 21.6598)
+
+[node name="Palm2" parent="Terrain3D/Terrain3DObjects" instance=ExtResource("7_trceg")]
+transform = Transform3D(0.988386, 0.151968, 0, -0.151968, 0.988386, 0, 0, 0, 1, 31.1037, 11.9458, 21.5991)
+
+[node name="Schematic" type="MeshInstance3D" parent="Terrain3D/Terrain3DObjects"]
+transform = Transform3D(1, 0, 0, 0, 0.890396, 0.455187, 0, -0.455187, 0.890396, 31.0961, 14.8045, 21.8463)
+mesh = SubResource("QuadMesh_jbj1t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain3D/Terrain3DObjects"]
+transform = Transform3D(0.826433, 0.357368, 0.435083, -0.563036, 0.524551, 0.638621, 0, -0.772745, 0.634717, 22.3543, 14.3735, 23.829)
+mesh = SubResource("BoxMesh_muem4")
+skeleton = NodePath("../..")
+
+[node name="robot" parent="Terrain3D/Terrain3DObjects" instance=ExtResource("13_trceg")]
+transform = Transform3D(0.958103, 0, -0.286424, -0.00230953, 0.999968, -0.0077255, 0.286415, 0.00806333, 0.958072, 31.9518, 14.6529, 22.6398)
+
+[node name="Label3D" type="Label3D" parent="Terrain3D/Terrain3DObjects"]
+transform = Transform3D(0.999284, 0.0378085, -0.00124028, -0.0240293, 0.659738, 0.751111, 0.0292167, -0.750544, 0.660175, 30.9664, 14.6882, 22.4445)
+pixel_size = 0.0005
+text = "Waiting for Connection"
+font_size = 200
+outline_size = 0
+
+[node name="field" parent="Terrain3D/Terrain3DObjects" instance=ExtResource("19_0ld40")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31, 0.0979999, 85)
+
+[node name="Ocean" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 14.2225, 0)
+mesh = SubResource("QuadMesh_tipki")
+
+[node name="Path3D" type="Path3D" parent="."]
+transform = Transform3D(0.963919, -0.0324181, -0.264214, 1.78063e-09, 0.992557, -0.121783, 0.266195, 0.117389, 0.956744, 30.971, 14.9985, 23.3468)
+curve = SubResource("Curve3D_trceg")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.967612, -0.0303264, -0.250614, -0.00030404, 0.992617, -0.121289, 0.252442, 0.117437, 0.96046, 31.0057, 15.0425, 23.3102)
+current = true
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_0ld40")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_pm3ni")
+}
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+
+[node name="ClimbButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = -450.0
+offset_top = -533.846
+offset_right = -347.0
+offset_bottom = -488.846
+scale = Vector2(3.5, 3.5)
+text = "High / Climb"
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -341.333
+offset_top = -176.667
+offset_right = 427.667
+offset_bottom = 723.333
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("16_jbj1t")
+
+[node name="ZeroButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 203.359
+offset_top = 400.0
+offset_right = 300.359
+offset_bottom = 445.0
+scale = Vector2(3.5, 3.5)
+text = "Zero"
+
+[node name="IntakeButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 203.359
+offset_top = 120.0
+offset_right = 300.359
+offset_bottom = 165.0
+scale = Vector2(3.5, 3.5)
+text = "Intake"
+
+[node name="MidButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = -450.0
+offset_top = -220.0
+offset_right = -353.0
+offset_bottom = -175.0
+scale = Vector2(3.5, 3.5)
+text = "Mid
+"
+
+[node name="LowButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = -450.0
+offset_top = 120.0
+offset_right = -353.0
+offset_bottom = 165.0
+scale = Vector2(3.5, 3.5)
+text = "Low"
+
+[node name="CoralButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 785.641
+offset_top = 102.102
+offset_right = 945.641
+offset_bottom = 346.102
+scale = Vector2(2.25, 2.25)
+theme_override_styles/normal = SubResource("StyleBoxFlat_jkv2x")
+text = "Drop / Eject Coral"
+
+[node name="IntakeAlgaButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = -1087.69
+offset_top = 102.102
+offset_right = -927.692
+offset_bottom = 346.102
+scale = Vector2(2.25, 2.25)
+theme_override_styles/normal = SubResource("StyleBoxFlat_jbj1t")
+text = "Intake Alga"
+
+[node name="DropAlgaButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = -1087.69
+offset_top = -569.231
+offset_right = -927.692
+offset_bottom = -325.231
+scale = Vector2(2.25, 2.25)
+theme_override_styles/normal = SubResource("StyleBoxFlat_muem4")
+text = "Drop Alga"

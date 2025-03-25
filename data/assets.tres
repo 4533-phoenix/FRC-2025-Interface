@@ -1,0 +1,28 @@
+[gd_resource type="Terrain3DAssets" load_steps=6 format=3 uid="uid://bh40xeyvx1w4"]
+
+[ext_resource type="Texture2D" uid="uid://ctbvywjnru6fw" path="res://data/textures/sand/albedo.png" id="1_ofdv4"]
+[ext_resource type="Texture2D" uid="uid://iy5fm6y1kyrs" path="res://data/textures/sand/normal.png" id="2_dmyyx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j4ayn"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 85.0
+distance_fade_max_distance = 75.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_oohc0"]
+material_override = SubResource("StandardMaterial3D_j4ayn")
+generated_type = 1
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_julmq"]
+name = "albedo"
+albedo_texture = ExtResource("1_ofdv4")
+normal_texture = ExtResource("2_dmyyx")
+uv_scale = 1.0
+
+[resource]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_oohc0")])
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_julmq")])
