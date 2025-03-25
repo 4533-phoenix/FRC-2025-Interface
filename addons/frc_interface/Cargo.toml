@@ -1,0 +1,11 @@
+[package]
+name = "frc_interface"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+godot = { git = "https://github.com/godot-rust/gdext" }
+vigem-client = "0.1.4"
