@@ -282,10 +282,11 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="Main" type="FRCInterfaceBase" node_paths=PackedStringArray("climb_button", "zero_button", "intake_button", "mid_button", "low_button", "coral_button", "intake_alga_button", "drop_alga_button")]
+[node name="Main" type="FRCInterfaceBase" node_paths=PackedStringArray("climb_button", "zero_button", "intake_button", "high_button", "mid_button", "low_button", "coral_button", "intake_alga_button", "drop_alga_button")]
 climb_button = NodePath("Control/ClimbButton")
 zero_button = NodePath("Control/ZeroButton")
 intake_button = NodePath("Control/IntakeButton")
+high_button = NodePath("Control/HighButton")
 mid_button = NodePath("Control/MidButton")
 low_button = NodePath("Control/LowButton")
 coral_button = NodePath("Control/CoralButton")
@@ -473,7 +474,7 @@ transform = Transform3D(0.963919, -0.0324181, -0.264214, 1.78063e-09, 0.992557, 
 curve = SubResource("Curve3D_trceg")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.967612, -0.0303264, -0.250614, -0.00030404, 0.992617, -0.121289, 0.252442, 0.117437, 0.96046, 31.0057, 15.0425, 23.3102)
+transform = Transform3D(0.967612, -0.0303264, -0.250613, -0.0035702, 0.991014, -0.133706, 0.252416, 0.13027, 0.95881, 31.0057, 15.0425, 23.3102)
 current = true
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -501,14 +502,23 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.75, 0.75)
 
+[node name="HighButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = -450.0
+offset_top = -327.692
+offset_right = -347.0
+offset_bottom = -282.692
+scale = Vector2(3.5, 3.5)
+text = "High"
+
 [node name="ClimbButton" type="Button" parent="Control"]
 layout_mode = 0
 offset_left = -450.0
-offset_top = -533.846
+offset_top = -540.0
 offset_right = -347.0
-offset_bottom = -488.846
+offset_bottom = -495.0
 scale = Vector2(3.5, 3.5)
-text = "High / Climb"
+text = "Climb"
 
 [node name="TextureRect" type="TextureRect" parent="Control"]
 layout_mode = 1
@@ -546,9 +556,9 @@ text = "Intake"
 [node name="MidButton" type="Button" parent="Control"]
 layout_mode = 0
 offset_left = -450.0
-offset_top = -220.0
+offset_top = -109.231
 offset_right = -353.0
-offset_bottom = -175.0
+offset_bottom = -64.2308
 scale = Vector2(3.5, 3.5)
 text = "Mid
 "
